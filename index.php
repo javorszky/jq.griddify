@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 if( !function_exists('es_preit') ) {
     function es_preit( $obj, $echo = true ) {
@@ -46,22 +46,22 @@ if( !function_exists('es_silent') ) {
         <p>Hello world! This is HTML5 Boilerplate.</p>
         <h1>This is where the images go</h1>
         <ul class="container clearfix">
-            <?php 
+            <?php
             $files = glob('img/*.jpg', GLOB_NOSORT);
             // es_preit($files);
             foreach ($files as $file) {
                 echo "<li><img src='{$file}'></li>";
-                
+
             }
-            
+
             ?>
-            
+
         </ul>
-    
+
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="jg.jq.griddify.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
-        <script src="jg.jq.griddify.js"></script>
     </body>
 </html>

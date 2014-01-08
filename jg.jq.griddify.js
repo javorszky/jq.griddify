@@ -14,7 +14,7 @@
 	// Create the defaults once
 	var pluginName = "griddify",
 		defaults = {
-			propertyName: "value"
+			height: "240"
 		};
 
 	// The actual plugin constructor
@@ -32,17 +32,84 @@
 
 	Plugin.prototype = {
 		init: function () {
-			console.log(this.element);
+			// console.log(this.element);
+			$(window).load(function() {
+				this.images = $(this.element).find("img");
+				this.imgLoaded = 0;
+				this.imgTotal = this.images.length;
+				this.containerWidth = $(this.element).width();
+				this.getRows();
+
+			});
 			// Place initialization logic here
 			// You already have access to the DOM element and
 			// the options via the instance, e.g. this.element
 			// and this.settings
 			// you can add more functions like the one below and
 			// call them like so: this.yourOtherFunction(this.element, this.settings).
-			console.log("xD");
+			// console.log("xD");
 		},
-		yourOtherFunction: function () {
-			// some logic
+		adjust: function (distinctRows) {
+			var self = this;
+
+			_.each(distinctRows, function (element, index, list) {
+                console.log(index, list.length);
+				if( index === list.length-1) {
+					console.log(index);
+					return;
+				}
+				var adjustSize = element.width - self.containerWidth,
+					margin = parseInt(adjustSize / (element.images.length*2)),
+					marginLast = (adjustSize - (element.images.length*2*margin)) + margin;
+
+				_.each(element.images, function (element, index, list) {
+					var _width;
+					if (index === list.length-1) {
+						_width = element.width() - margin - marginLast;
+						element.css({
+							'margin-left': -margin,
+							'margin-right': -marginLast
+						});
+
+						element.parent().width(_width);
+					} else {
+						_width = element.width() - 2*margin;
+						element.css({
+							'margin-left': -margin,
+							'margin-right': -margin
+						});
+						element.parent().width(_width);
+					}
+				});
+
+			});
+		},
+		getRows: function () {
+			var distinctRows = [],
+				rowIndex = 0,
+				_width = 0,
+				self = this;
+
+			_.each(self.images, function (element, index) {
+				distinctRows[rowIndex] = distinctRows[rowIndex] || [];
+				distinctRows[rowIndex]['images'] = distinctRows[rowIndex]['images'] || [];
+				distinctRows[rowIndex]['width'] = distinctRows[rowIndex]['width'] || 0;
+
+				var $el = $(element);
+				_width += $el.width()+10;
+				// console.log(rowIndex);
+				// console.log($el);
+				if(_width < self.containerWidth) {
+					distinctRows[rowIndex]['images'].push($el);
+				} else {
+					distinctRows[rowIndex]['images'].push($el);
+					distinctRows[rowIndex]['width'] = _width;
+					_width = 0;
+					rowIndex += 1;
+				}
+
+			});
+			this.adjust(distinctRows);
 		}
 	};
 

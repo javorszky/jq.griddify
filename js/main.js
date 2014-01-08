@@ -61,7 +61,10 @@
 
 				});
 				adjust(distinctRows);
-			},
-			rows = getRows();
+			};
+			// rows = getRows();
 	});
+	console.log('jquery loaded');
+	console.log($.fn);
+	$('.container').griddify();
 }(jQuery));
